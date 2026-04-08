@@ -59,7 +59,7 @@ if $1 == 'laptop'; then
 	# 	if ! systemctl is-enabled "$service" &> /dev/null; then
 	# 		sudo systemctl enable "$service"
 	# 	fi
-	done
+	# done
 
 elseif $1 =='desktop'; then
 	# Install packages by category
@@ -69,24 +69,26 @@ elseif $1 =='desktop'; then
 	# install_packages "${DEV_TOOLS[@]}"
 	# install_packages "${MAINTENANCE[@]}"
 	if [ $2 = 'kde' ]
-	 then
+	then
 		# install_packages "${KDE[@]}"
 		cat ./packages/kde.txt | xargs sudo pacman -S --needed --noconfirm 
 	elseif [ $2 = 'hypr' ]
-	 then
+	then
 		cat ./packages/hyprland.txt | xargs sudo pacman -S --needed --noconfirm 
 		# install_packages "${HYPRLAND[@]}"
-	# install_packages "${MEDIA[@]}"
-	# install_packages "${FONTS[@]}"
-	cat ./packages/fonts.txt | xargs sudo pacman -S --needed --noconfirm 
-	# install_packages "${GAMES[@]}"
-	cat ./packages/games.txt | xargs sudo pacman -S --needed --noconfirm 
-	# for service in "${SERVICES[@]}"; do
-  	# 	if ! systemctl is-enabled "$service" &> /dev/null; then
-    # 			sudo systemctl enable "$service"
-  	# 	fi
-	sudo systemctl enable NetworkManager.service
-	done
+		# install_packages "${MEDIA[@]}"
+		# install_packages "${FONTS[@]}"
+		cat ./packages/fonts.txt | xargs sudo pacman -S --needed --noconfirm 
+		# install_packages "${GAMES[@]}"
+		cat ./packages/games.txt | xargs sudo pacman -S --needed --noconfirm 
+		# for service in "${SERVICES[@]}"; do
+  		# 	if ! systemctl is-enabled "$service" &> /dev/null; then
+    	# 			sudo systemctl enable "$service"
+  		# 	fi
+		sudo systemctl enable NetworkManager.service
+		# done
+	fi
+fi
 
 # Install flatpaks, unused rn
 # . install-flatpaks.sh
@@ -102,7 +104,8 @@ cd dotfiles/
 # stow_dotfiles "${STOW[@]}"
 cat stow.txt | xargs stow 
 # If using hyprland, stows waybar config
-if $2 = 'hypr'; then
+if [ $2 = 'hypr' ] 
+then
 	stow waybar
 fi
 
