@@ -74,17 +74,17 @@ elif [[ $1 = desktop ]]; then
 	elif [[ $2 = hypr ]]; then
 		cat ./packages/hyprland.txt | xargs yay -S --needed --noconfirm 
 		# install_packages "${HYPRLAND[@]}"
-		# install_packages "${MEDIA[@]}"
-		# install_packages "${FONTS[@]}"
-		cat ./packages/fonts.txt | xargs yay -S --needed --noconfirm 
-		# install_packages "${GAMES[@]}"
-		cat ./packages/games.txt | xargs yay -S --needed --noconfirm 
-		# for service in "${SERVICES[@]}"; do
-  		# 	if ! systemctl is-enabled "$service" &> /dev/null; then
-    	# 			sudo systemctl enable "$service"
-  		# 	fi
-		sudo systemctl enable NetworkManager.service
-		# done
+	# install_packages "${MEDIA[@]}"
+	# install_packages "${FONTS[@]}"
+	cat ./packages/fonts.txt | xargs yay -S --needed --noconfirm 
+	# install_packages "${GAMES[@]}"
+	cat ./packages/games.txt | xargs yay -S --needed --noconfirm 
+	# for service in "${SERVICES[@]}"; do
+  	# 	if ! systemctl is-enabled "$service" &> /dev/null; then
+    # 			sudo systemctl enable "$service"
+  	# 	fi
+	sudo systemctl enable NetworkManager.service
+	# done
 	fi
 fi
 

@@ -3,7 +3,6 @@ dolphin
 fastfetch
 iwd
 openvpn
-orca-slicer
 rofi
 spotify-launcher
 starship
