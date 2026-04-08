@@ -21,7 +21,7 @@ install_packages() {
 		fi
 	done
 
-	if [ %(#to_install[@]} -ne 0]; then
+	if [ %{#to_install[@]} -ne 0]; then
 		echo "Installing ${to_install[*]}"
 		yay -S --noconfirm "${to_install[@]}"
 	fi
