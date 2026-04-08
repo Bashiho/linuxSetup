@@ -27,3 +27,10 @@ install_packages() {
 	fi
 }
 
+stow_packages() {
+	local packages=("$@")
+	for pkg in "${packages[@]}"; do
+		# Uses stow with flag t to set target directory to home
+		stow -t ~ "$pkg"
+	done
+}

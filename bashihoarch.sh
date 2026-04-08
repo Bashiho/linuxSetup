@@ -1,10 +1,15 @@
 #!/bin/bash
 
+# This is to be run on a mostly clean install of Archlinux
+# Arguments:
+# $1 System Type: Options {laptop, desktop}
+# $2 Desktop Environment: Options {kde, hypr}
+
 # Exit on any error
 set -e
 
 # Source utility functions
-source utils.sh
+source ./utils.sh
 
 # Source the package list
 if [ ! -f "packages.conf" ]; then
@@ -12,7 +17,7 @@ if [ ! -f "packages.conf" ]; then
   exit 1
 fi
 
-source packages.conf
+source ./packages.conf
 
 # Update the system first
 echo "Updating before setup"
@@ -28,46 +33,67 @@ if ! command -v yay &> /dev/null; then
   cd yay
   echo "building yay"
   makepkg -si --noconfirm
+  # Clean up files
   cd ..
   rm -rf yay
 else
   echo "yay is already installed"
 fi
 
-# Install packages by category
-echo "Installing system utilities..."
-install_packages "${SYSTEM_UTILS[@]}"
+# First argument determines which kind of system I am trying to set up, laptop vs desktop
+if $1 == 'laptop'; then
+	echo "Installing laptop packages"
+	install_packages "${LAPTOP_UTILS[@]}"
+	install_packages "${LAPTOP_DEV[@]}"
+	install_packages "${LAPTOP_MAINTENANCE[@]}"
+	if $2 = 'kde'; then
+		install_packages "${KDE[@]}"
+	elseif $2 = 'hypr'; then
+		install_packages "${HYPRLAND[@]}"
+	install_packages "${LAPTOP_MEDIA[@]}"
+	install_packages "${LAPTOP_FONTS[@]}"
+	install_packages "${LAPTOP_GAMES[@]}"
+	for service in "${LAPTOP_SERVICES[@]}" do
+		if ! systemctl is-enabled "$service" &> /dev/null; then
+			sudo systemctl enable "$service"
+		fi
+	done
 
-echo "Installing development tools..."
-install_packages "${DEV_TOOLS[@]}"
+elseif $1 =='desktop'; then
+	# Install packages by category
+	install_packages "${SYSTEM_UTILS[@]}"
+	install_packages "${DEV_TOOLS[@]}"
+	install_packages "${MAINTENANCE[@]}"
+	if $2 = 'kde'; then
+		install_packages "${KDE[@]}"
+	elseif $2 = 'hypr'; then
+		install_packages "${HYPRLAND[@]}"
+	install_packages "${OFFICE[@]}"
+	install_packages "${MEDIA[@]}"
+	install_packages "${FONTS[@]}"
+	install_packages "${GAMES[@]}"
+	for service in "${SERVICES[@]}"; do
+  		if ! systemctl is-enabled "$service" &> /dev/null; then
+    			sudo systemctl enable "$service"
+  		fi
+	done
 
-echo "Installing system maintenance tools..."
-install_packages "${MAINTENANCE[@]}"
+# Install flatpaks, unused rn
+# . install-flatpaks.sh
 
-echo "Installing desktop environment..."
-install_packages "${DESKTOP[@]}"
+# Use this wrapper to implement stow for dotfiles
+# https://github.com/jpasquier/stoww
+# Download dotfiles repository
+cd ~/Documents/Code/
+git clone git@github.com:Bashiho/dotfiles.git
+cd dotfiles/
+# Calls stow_dotfiles to stow all of the dotfiles I currently use
+# Some are not used anymore, can always remove them (alacritty, tofi, wezterm)
+stow_dotfiles "${STOW[@]}"
+# If using hyprland, stows waybar config
+if $2 = 'hypr'; then
+	stow waybar
+fi
 
-echo "Installing desktop environment..."
-install_packages "${OFFICE[@]}"
-
-echo "Installing media packages..."
-install_packages "${MEDIA[@]}"
-
-echo "Installing fonts..."
-install_packages "${FONTS[@]}"
-
-# Enable services
-echo "Configuring services..."
-for service in "${SERVICES[@]}"; do
-  if ! systemctl is-enabled "$service" &> /dev/null; then
-    echo "Enabling $service..."
-    sudo systemctl enable "$service"
-  else
-    echo "$service is already enabled"
-  fi
-done
-
-echo "Installing flatpaks"
-. install-flatpaks.sh
 
 echo "Setup complete!"
