@@ -68,12 +68,10 @@ elif [[ $1 = desktop ]]; then
 	cat ./packages/dev.txt | xargs sudo pacman -S --needed --noconfirm 
 	# install_packages "${DEV_TOOLS[@]}"
 	# install_packages "${MAINTENANCE[@]}"
-	if [ $2 = 'kde' ]
-	then
+	if [[ $2 = kde ]]; then
 		# install_packages "${KDE[@]}"
 		cat ./packages/kde.txt | xargs sudo pacman -S --needed --noconfirm 
-	elseif [ $2 = 'hypr' ]
-	then
+	elif [[ $2 = hypr ]]; then
 		cat ./packages/hyprland.txt | xargs sudo pacman -S --needed --noconfirm 
 		# install_packages "${HYPRLAND[@]}"
 		# install_packages "${MEDIA[@]}"
@@ -104,8 +102,7 @@ cd dotfiles/
 # stow_dotfiles "${STOW[@]}"
 cat stow.txt | xargs stow 
 # If using hyprland, stows waybar config
-if [ $2 = 'hypr' ] 
-then
+if [[ $2 = hypr ]]; then
 	stow waybar
 fi
 
