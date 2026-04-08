@@ -42,21 +42,23 @@ fi
 
 # First argument determines which kind of system I am trying to set up, laptop vs desktop
 if $1 == 'laptop'; then
-	echo "Installing laptop packages"
-	install_packages "${LAPTOP_UTILS[@]}"
-	install_packages "${LAPTOP_DEV[@]}"
-	install_packages "${LAPTOP_MAINTENANCE[@]}"
-	if $2 = 'kde'; then
-		install_packages "${KDE[@]}"
-	elseif $2 = 'hypr'; then
-		install_packages "${HYPRLAND[@]}"
-	install_packages "${LAPTOP_MEDIA[@]}"
-	install_packages "${LAPTOP_FONTS[@]}"
-	install_packages "${LAPTOP_GAMES[@]}"
-	for service in "${LAPTOP_SERVICES[@]}" do
-		if ! systemctl is-enabled "$service" &> /dev/null; then
-			sudo systemctl enable "$service"
-		fi
+	# echo "Installing laptop packages"
+	# install_packages "${LAPTOP_UTILS[@]}"
+	# install_packages "${LAPTOP_DEV[@]}"
+	# install_packages "${LAPTOP_MAINTENANCE[@]}"
+	# if [ $2 = 'kde' ] 
+	# then
+	# 	install_packages "${KDE[@]}"
+	# elseif [ $2 = 'hypr' ] 
+	# then
+	# 	install_packages "${HYPRLAND[@]}"
+	# install_packages "${LAPTOP_MEDIA[@]}"
+	# install_packages "${LAPTOP_FONTS[@]}"
+	# install_packages "${LAPTOP_GAMES[@]}"
+	# for service in "${LAPTOP_SERVICES[@]}" do
+	# 	if ! systemctl is-enabled "$service" &> /dev/null; then
+	# 		sudo systemctl enable "$service"
+	# 	fi
 	done
 
 elseif $1 =='desktop'; then
@@ -66,10 +68,12 @@ elseif $1 =='desktop'; then
 	cat ./packages/dev.txt | xargs sudo pacman -S --needed --noconfirm 
 	# install_packages "${DEV_TOOLS[@]}"
 	# install_packages "${MAINTENANCE[@]}"
-	if $2 = 'kde'; then
+	if [ $2 = 'kde' ]
+	 then
 		# install_packages "${KDE[@]}"
 		cat ./packages/kde.txt | xargs sudo pacman -S --needed --noconfirm 
-	elseif $2 = 'hypr'; then
+	elseif [ $2 = 'hypr' ]
+	 then
 		cat ./packages/hyprland.txt | xargs sudo pacman -S --needed --noconfirm 
 		# install_packages "${HYPRLAND[@]}"
 	# install_packages "${MEDIA[@]}"
