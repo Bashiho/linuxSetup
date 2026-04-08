@@ -61,7 +61,7 @@ if $1 == 'laptop'; then
 	# 	fi
 	# done
 
-elseif [[ $1 = desktop ]]; then
+elif [[ $1 = desktop ]]; then
 	# Install packages by category
 	# install_packages "${SYSTEM_UTILS[@]}"
 	cat ./packages/utils.txt | xargs sudo pacman -S --needed --noconfirm 
