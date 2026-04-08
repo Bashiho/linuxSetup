@@ -42,7 +42,7 @@ fi
 
 # First argument determines which kind of system I am trying to set up, laptop vs desktop
 if $1 == 'laptop'; then
-	# echo "Installing laptop packages"
+	echo "Installing laptop packages"
 	# install_packages "${LAPTOP_UTILS[@]}"
 	# install_packages "${LAPTOP_DEV[@]}"
 	# install_packages "${LAPTOP_MAINTENANCE[@]}"
