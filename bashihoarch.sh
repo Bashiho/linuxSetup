@@ -64,21 +64,21 @@ if $1 == 'laptop'; then
 elif [[ $1 = desktop ]]; then
 	# Install packages by category
 	# install_packages "${SYSTEM_UTILS[@]}"
-	cat ./packages/utils.txt | xargs sudo pacman -S --needed --noconfirm 
-	cat ./packages/dev.txt | xargs sudo pacman -S --needed --noconfirm 
+	cat ./packages/utils.txt | xargs yay -S --needed --noconfirm 
+	cat ./packages/dev.txt | xargs yay -S --needed --noconfirm 
 	# install_packages "${DEV_TOOLS[@]}"
 	# install_packages "${MAINTENANCE[@]}"
 	if [[ $2 = kde ]]; then
 		# install_packages "${KDE[@]}"
-		cat ./packages/kde.txt | xargs sudo pacman -S --needed --noconfirm 
+		cat ./packages/kde.txt | xargs yay -S --needed --noconfirm 
 	elif [[ $2 = hypr ]]; then
-		cat ./packages/hyprland.txt | xargs sudo pacman -S --needed --noconfirm 
+		cat ./packages/hyprland.txt | xargs yay -S --needed --noconfirm 
 		# install_packages "${HYPRLAND[@]}"
 		# install_packages "${MEDIA[@]}"
 		# install_packages "${FONTS[@]}"
-		cat ./packages/fonts.txt | xargs sudo pacman -S --needed --noconfirm 
+		cat ./packages/fonts.txt | xargs yay -S --needed --noconfirm 
 		# install_packages "${GAMES[@]}"
-		cat ./packages/games.txt | xargs sudo pacman -S --needed --noconfirm 
+		cat ./packages/games.txt | xargs yay -S --needed --noconfirm 
 		# for service in "${SERVICES[@]}"; do
   		# 	if ! systemctl is-enabled "$service" &> /dev/null; then
     	# 			sudo systemctl enable "$service"

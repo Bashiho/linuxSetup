@@ -1,7 +1,6 @@
 discord
 dolphin
 fastfetch
-floorp
 iwd
 openvpn
 orca-slicer
