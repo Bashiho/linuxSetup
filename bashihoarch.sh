@@ -100,10 +100,10 @@ cd dotfiles/
 # Calls stow_dotfiles to stow all of the dotfiles I currently use
 # Some are not used anymore, can always remove them (alacritty, tofi, wezterm)
 # stow_dotfiles "${STOW[@]}"
-cat stow.txt | xargs stow 
+cat stow.txt | xargs stow -vt ~ 
 # If using hyprland, stows waybar config
 if [[ $2 = hypr ]]; then
-	stow waybar
+	stow -vt ~ waybar
 fi
 
 
