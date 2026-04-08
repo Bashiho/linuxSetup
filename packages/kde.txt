@@ -1,0 +1,2 @@
+plasma-meta
+plasma6-applets-plasmusic-toolbar

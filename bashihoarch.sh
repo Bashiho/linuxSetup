@@ -17,7 +17,7 @@ if [ ! -f "packages.conf" ]; then
   exit 1
 fi
 
-source ./packages.conf
+# source ./packages.conf
 
 # Update the system first
 echo "Updating before setup"
@@ -61,21 +61,27 @@ if $1 == 'laptop'; then
 
 elseif $1 =='desktop'; then
 	# Install packages by category
-	install_packages "${SYSTEM_UTILS[@]}"
-	install_packages "${DEV_TOOLS[@]}"
-	install_packages "${MAINTENANCE[@]}"
+	# install_packages "${SYSTEM_UTILS[@]}"
+	cat ./packages/utils.txt | xargs sudo pacman -S --needed --noconfirm 
+	cat ./packages/dev.txt | xargs sudo pacman -S --needed --noconfirm 
+	# install_packages "${DEV_TOOLS[@]}"
+	# install_packages "${MAINTENANCE[@]}"
 	if $2 = 'kde'; then
-		install_packages "${KDE[@]}"
+		# install_packages "${KDE[@]}"
+		cat ./packages/kde.txt | xargs sudo pacman -S --needed --noconfirm 
 	elseif $2 = 'hypr'; then
-		install_packages "${HYPRLAND[@]}"
-	install_packages "${OFFICE[@]}"
-	install_packages "${MEDIA[@]}"
-	install_packages "${FONTS[@]}"
-	install_packages "${GAMES[@]}"
-	for service in "${SERVICES[@]}"; do
-  		if ! systemctl is-enabled "$service" &> /dev/null; then
-    			sudo systemctl enable "$service"
-  		fi
+		cat ./packages/hyprland.txt | xargs sudo pacman -S --needed --noconfirm 
+		# install_packages "${HYPRLAND[@]}"
+	# install_packages "${MEDIA[@]}"
+	# install_packages "${FONTS[@]}"
+	cat ./packages/fonts.txt | xargs sudo pacman -S --needed --noconfirm 
+	# install_packages "${GAMES[@]}"
+	cat ./packages/games.txt | xargs sudo pacman -S --needed --noconfirm 
+	# for service in "${SERVICES[@]}"; do
+  	# 	if ! systemctl is-enabled "$service" &> /dev/null; then
+    # 			sudo systemctl enable "$service"
+  	# 	fi
+	sudo systemctl enable NetworkManager.service
 	done
 
 # Install flatpaks, unused rn
@@ -89,7 +95,8 @@ git clone git@github.com:Bashiho/dotfiles.git
 cd dotfiles/
 # Calls stow_dotfiles to stow all of the dotfiles I currently use
 # Some are not used anymore, can always remove them (alacritty, tofi, wezterm)
-stow_dotfiles "${STOW[@]}"
+# stow_dotfiles "${STOW[@]}"
+cat stow.txt | xargs stow 
 # If using hyprland, stows waybar config
 if $2 = 'hypr'; then
 	stow waybar

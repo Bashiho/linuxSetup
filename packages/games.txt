@@ -1,0 +1,7 @@
+artix-games-launcher
+cataclysm-dda
+cockatrice
+lutris
+polymc
+rpcs3
+steam

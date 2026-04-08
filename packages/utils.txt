@@ -1,0 +1,12 @@
+discord
+dolphin
+fastfetch
+floorp
+iwd
+openvpn
+orca-slicer
+rofi
+spotify-launcher
+starship
+stow
+xwaylandvideobridge

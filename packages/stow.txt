@@ -1,0 +1,4 @@
+fastfetch
+fish
+kitty
+starship
