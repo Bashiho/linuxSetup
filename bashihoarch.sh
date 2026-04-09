@@ -83,8 +83,9 @@ elif [[ $1 = desktop ]]; then
   	# 	if ! systemctl is-enabled "$service" &> /dev/null; then
     # 			sudo systemctl enable "$service"
   	# 	fi
-	sudo systemctl enable NetworkManager.service
+	# sudo systemctl enable NetworkManager.service
 	# done
+	sudo systemctl enable sddm.service
 	fi
 fi
 
@@ -94,13 +95,15 @@ fi
 # Use this wrapper to implement stow for dotfiles
 # https://github.com/jpasquier/stoww
 # Download dotfiles repository
+mkdir ~/Documents
+mkdir ~/Documents/Code
 cd ~/Documents/Code/
-git clone git@github.com:Bashiho/dotfiles.git
+git clone github.com/bashiho/dotfiles.git
 cd dotfiles/
 # Calls stow_dotfiles to stow all of the dotfiles I currently use
 # Some are not used anymore, can always remove them (alacritty, tofi, wezterm)
 # stow_dotfiles "${STOW[@]}"
-cat stow.txt | xargs stow -vt ~ 
+cat ~/linuxsetup/packages/stow.txt | xargs stow -vt ~ 
 # If using hyprland, stows waybar config
 if [[ $2 = hypr ]]; then
 	stow -vt ~ waybar
