@@ -11,14 +11,6 @@ set -e
 # Source utility functions
 source ./utils.sh
 
-# Source the package list
-if [ ! -f "packages.conf" ]; then
-  echo "Error: packages.conf not found!"
-  exit 1
-fi
-
-# source ./packages.conf
-
 # Update the system first
 echo "Updating before setup"
 sudo pacman -Syu --noconfirm
@@ -43,71 +35,52 @@ fi
 # First argument determines which kind of system I am trying to set up, laptop vs desktop
 if $1 == 'laptop'; then
 	echo "Installing laptop packages"
-	# install_packages "${LAPTOP_UTILS[@]}"
-	# install_packages "${LAPTOP_DEV[@]}"
-	# install_packages "${LAPTOP_MAINTENANCE[@]}"
-	# if [ $2 = 'kde' ] 
-	# then
-	# 	install_packages "${KDE[@]}"
-	# elseif [ $2 = 'hypr' ] 
-	# then
-	# 	install_packages "${HYPRLAND[@]}"
-	# install_packages "${LAPTOP_MEDIA[@]}"
-	# install_packages "${LAPTOP_FONTS[@]}"
-	# install_packages "${LAPTOP_GAMES[@]}"
-	# for service in "${LAPTOP_SERVICES[@]}" do
-	# 	if ! systemctl is-enabled "$service" &> /dev/null; then
-	# 		sudo systemctl enable "$service"
-	# 	fi
-	# done
-
-elif [[ $1 = desktop ]]; then
 	# Install packages by category
-	# install_packages "${SYSTEM_UTILS[@]}"
-	cat ./packages/utils.txt | xargs yay -S --needed --noconfirm 
-	cat ./packages/dev.txt | xargs yay -S --needed --noconfirm 
-	# install_packages "${DEV_TOOLS[@]}"
-	# install_packages "${MAINTENANCE[@]}"
+	cat ./packages/laptop/utils.txt | xargs yay -S --needed --noconfirm 
+	cat ./packages/laptop/dev.txt | xargs yay -S --needed --noconfirm
 	if [[ $2 = kde ]]; then
-		# install_packages "${KDE[@]}"
 		cat ./packages/kde.txt | xargs yay -S --needed --noconfirm 
 	elif [[ $2 = hypr ]]; then
-		cat ./packages/hyprland.txt | xargs yay -S --needed --noconfirm 
-		# install_packages "${HYPRLAND[@]}"
-	# install_packages "${MEDIA[@]}"
-	# install_packages "${FONTS[@]}"
+		cat ./packages/hyprland.txt | xargs yay -S --needed --noconfirm
+		sudo systemctl enable sddm.service
 	cat ./packages/fonts.txt | xargs yay -S --needed --noconfirm 
-	# install_packages "${GAMES[@]}"
-	cat ./packages/games.txt | xargs yay -S --needed --noconfirm 
-	# for service in "${SERVICES[@]}"; do
-  	# 	if ! systemctl is-enabled "$service" &> /dev/null; then
-    # 			sudo systemctl enable "$service"
-  	# 	fi
-	# sudo systemctl enable NetworkManager.service
-	# done
-	sudo systemctl enable sddm.service
+	cat ./packages/laptop/games.txt | xargs yay -S --needed --noconfirm 
+	fi
+
+elif [[ $1 = desktop ]]; then
+	echo "Installing desktop packages"
+	# Install packages by category
+	cat ./packages/desktopp/utils.txt | xargs yay -S --needed --noconfirm 
+	cat ./packages/desktop/dev.txt | xargs yay -S --needed --noconfirm
+	if [[ $2 = kde ]]; then
+		cat ./packages/kde.txt | xargs yay -S --needed --noconfirm 
+	elif [[ $2 = hypr ]]; then
+		cat ./packages/hyprland.txt | xargs yay -S --needed --noconfirm
+		sudo systemctl enable sddm.service
+	cat ./packages/fonts.txt | xargs yay -S --needed --noconfirm 
+	cat ./packages/desktop/games.txt | xargs yay -S --needed --noconfirm 
 	fi
 fi
 
 # Install flatpaks, unused rn
 # . install-flatpaks.sh
 
-# Use this wrapper to implement stow for dotfiles
-# https://github.com/jpasquier/stoww
 # Download dotfiles repository
 mkdir ~/Documents
 mkdir ~/Documents/Code
 cd ~/Documents/Code/
-git clone github.com/bashiho/dotfiles.git
+git clone https://github.com/bashiho/dotfiles.git
 cd dotfiles/
 # Calls stow_dotfiles to stow all of the dotfiles I currently use
 # Some are not used anymore, can always remove them (alacritty, tofi, wezterm)
-# stow_dotfiles "${STOW[@]}"
 cat ~/linuxsetup/packages/stow.txt | xargs stow -vt ~ 
 # If using hyprland, stows waybar config
 if [[ $2 = hypr ]]; then
 	stow -vt ~ waybar
 fi
 
+echo "Cleaning up linuxsetup files"
+cd ~
+rm -rf linuxsetup
 
-echo "Setup complete!"
+echo "Setup complete, please reboot"

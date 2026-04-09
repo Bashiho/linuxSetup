@@ -1,0 +1,7 @@
+discord
+dolphin
+fastfetch
+iwd
+rofi
+starship
+stow
