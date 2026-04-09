@@ -1,4 +1,5 @@
 hyprland
 hyprpaper
 hyprshot
+sddm
 waybar

@@ -7,4 +7,3 @@ rofi
 spotify-launcher
 starship
 stow
-xwaylandvideobridge
