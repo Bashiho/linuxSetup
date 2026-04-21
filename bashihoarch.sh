@@ -79,6 +79,10 @@ if [[ $2 = hypr ]]; then
 	stow -vt ~ waybar
 fi
 
+# https://tmak2002.dev/blog/how-to-configure-japanese-input-on-hyprland/
+# echo "Installing Japanese Keyboard packages"
+# sudo pacman -Sy fcitx5-im fcitx5-mozc fcitx5-configtool adobe-source-han-sans-jp-fonts adobe-source-han-serif-jp-fonts noto-fonts-cjk
+
 echo "Cleaning up linuxsetup files"
 cd ~
 rm -rf linuxsetup

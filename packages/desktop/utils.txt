@@ -1,9 +1,9 @@
 discord
 dolphin
+elisa
 fastfetch
 iwd
 openvpn
 rofi
-spotify-launcher
 starship
 stow
